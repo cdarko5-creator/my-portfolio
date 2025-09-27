@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Number Guessing Game</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <h1>Cosmos Darko</h1>
+      <nav>
+        <a href="/">Home</a>
+        <a href="#game">Play</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <!-- Game Section -->
+    <main id="game">
+      <h2>🎮 Number Guessing Game</h2>
+      <p>
+        I'm thinking of a number between <strong>1</strong> and
+        <strong>100</strong>. Can you guess it?
+      </p>
+
+      <input
+        type="number"
+        id="guessInput"
+        placeholder="Enter your guess"
+        min="1"
+        max="100"
+      />
+      <button onclick="checkGuess()">Submit Guess</button>
+      <button onclick="restartGame()" style="display: none" id="restartBtn">
+        Play Again
+      </button>
+
+      <p id="feedback"></p>
+      <p id="attempts"></p>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact">
+      <p>Contact me:</p>
+      <p>Phone: 0541855232</p>
+      <p><a href="mailto:cosmosdarko5@gmail.com">Email Me</a></p>
+      <p>
+        <a href="https://github.com" target="_blank">GitHub</a> |
+        <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+      </p>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/233541855232" class="whatsapp-float" target="_blank"
+      >💬 WhatsApp Us</a
+    >
+
+    <!-- Game Script -->
+    <script>
+      let targetNumber = Math.floor(Math.random() * 100) + 1;
+      let attempts = 0;
+      let gameOver = false;
+
+      function checkGuess() {
+        if (gameOver) return;
+
+        const userGuess = parseInt(document.getElementById("guessInput").value);
+        const feedback = document.getElementById("feedback");
+        const attemptsDisplay = document.getElementById("attempts");
+
+        if (isNaN(userGuess) || userGuess < 1 || userGuess > 100) {
+          feedback.innerText =
+            "⚠️ Please enter a valid number between 1 and 100.";
+          return;
+        }
+
+        attempts++;
+
+        if (userGuess === targetNumber) {
+          feedback.innerText = `✅ Correct! You guessed it in ${attempts} attempts.`;
+          feedback.style.color = "green";
+          gameOver = true;
+          document.getElementById("restartBtn").style.display = "inline-block";
+        } else if (userGuess < targetNumber) {
+          feedback.innerText = "📉 Too low! Try again.";
+          feedback.style.color = "red";
+        } else {
+          feedback.innerText = "📈 Too high! Try again.";
+          feedback.style.color = "red";
+        }
+
+        attemptsDisplay.innerText = `Attempts: ${attempts}`;
+        document.getElementById("guessInput").value = "";
+      }
+
+      function restartGame() {
+        targetNumber = Math.floor(Math.random() * 100) + 1;
+        attempts = 0;
+        gameOver = false;
+        document.getElementById("feedback").innerText = "";
+        document.getElementById("attempts").innerText = "";
+        document.getElementById("guessInput").value = "";
+        document.getElementById("restartBtn").style.display = "none";
+      }
+    </script>
+  </body>
+</html>

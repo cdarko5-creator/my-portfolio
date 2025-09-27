@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mortgage Calculator</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Mortgage Calculator</h1>
+      <nav>
+        <a href="index.html">Home</a>
+      </nav>
+    </header>
+
+    <section id="project">
+      <div class="project-card">
+        <h2>Mortgage Calculator</h2>
+        <form id="calc-form">
+          <div class="form-group">
+            <label for="principal">Principal ($1K - $1M):</label>
+            <input type="number" id="principal" required />
+          </div>
+
+          <div class="form-group">
+            <label for="interest">Annual Interest Rate (%):</label>
+            <input type="number" id="interest" step="0.01" required />
+          </div>
+
+          <div class="form-group">
+            <label for="years">Period (Years):</label>
+            <input type="number" id="years" required />
+          </div>
+
+          <button type="button" onclick="calculateMortgage()">Calculate</button>
+        </form>
+
+        <p id="output"></p>
+      </div>
+    </section>
+
+    <footer>
+      <p>Contact: your.email@example.com</p>
+      <p>
+        <a href="https://github.com">GitHub</a> |
+        <a href="https://linkedin.com">LinkedIn</a>
+      </p>
+    </footer>
+
+    <script>
+      function calculateMortgage() {
+        const principal = parseFloat(
+          document.getElementById("principal").value
+        );
+        const annualRate = parseFloat(
+          document.getElementById("interest").value
+        );
+        const years = parseInt(document.getElementById("years").value);
+
+        if (principal < 1000 || principal > 1000000) {
+          document.getElementById("output").innerText =
+            "Enter a number between 1,000 and 1,000,000";
+          return;
+        }
+
+        if (annualRate <= 0 || annualRate > 30) {
+          document.getElementById("output").innerText =
+            "Enter a number greater than 0 but less than or equal to 30";
+          return;
+        }
+
+        if (years < 1 || years > 30) {
+          document.getElementById("output").innerText =
+            "Enter a number between 1 and 30";
+          return;
+        }
+
+        const MONTHS_IN_YEAR = 12;
+        const PERCENT = 100;
+
+        const monthlyRate = annualRate / PERCENT / MONTHS_IN_YEAR;
+        const numberOfPayments = years * MONTHS_IN_YEAR;
+
+        const mortgage =
+          (principal *
+            (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments))) /
+          (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+
+        document.getElementById("output").innerText =
+          "Monthly Payment: $" + mortgage.toFixed(2);
+      }
+    </script>
+  </body>
+</html>
